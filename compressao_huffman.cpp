@@ -6,6 +6,7 @@
 #include <queue>
 #include <sstream>
 #include <functional>
+#include <stack>
 
 using namespace std;
 
@@ -61,6 +62,34 @@ void calcularProbabilidade(vector<Simbolo*> vec_s, double total) {
     }
 }
 
+void gerarTabela(Simbolo *raiz, vector<int> *comp, vector<int> *cod, stack<string> *pbits) {
+    
+    stack<string> pilha_codigo = *pbits;
+
+    cout << pilha_codigo.top() << endl;
+    pilha_codigo.pop();
+
+ /*   if(!raiz) {
+        pbits->push("0");
+        gerarTabela(raiz->esquerda, comp, cod, pbits);
+        pbits->pop();
+
+        pbits->push("1");
+        gerarTabela(raiz->direita, comp, cod, pbits);
+        pbits->pop();
+
+    }
+    else{
+        stack<string> pilha_codigo = *pbits;
+
+        while(!pilha_codigo.empty()) {
+            cout << pilha_codigo.top() << endl;
+            pilha_codigo.pop();
+        }
+
+    }   */
+}   
+
 void exibirArvore(Simbolo *s) {
     cout << s->getCaractere() << endl;
     if(s->esquerda)
@@ -98,11 +127,12 @@ int main(){
     double t = (double) total;
     calcularProbabilidade(vec_s, t);
 
-    /*for(int i = 0; i < vec_s.size(); i++) {
+    for(int i = 0; i < vec_s.size(); i++) {
         cout << "Caractere " << vec_s.at(i)->getCaractere();
         cout << ", repetições " <<  vec_s.at(i)->getQuantidade();
         cout << ", probabilidade " << vec_s.at(i)->getProbabilidade() * 100 << "%" << endl;
-    }*/
+    }
+    cout << endl << endl;
 
     priority_queue<Simbolo*, vector<Simbolo*>, MaiorProbabilidade> pq_simbolo; 
 
@@ -113,8 +143,19 @@ int main(){
     struct Raiz *raiz = new struct Raiz;
 
     gerarArvore(&pq_simbolo, raiz);
-    exibirArvore(raiz->raiz_arvore);
     
+    stack<string> pbits;
+    vector<int> comp;
+    vector<int> cod;
+
+    pbits.push("4");
+    pbits.push("4");
+    pbits.push("4");
+    pbits.push("4");
+    pbits.push("4");
+    pbits.push("4");
+
+    gerarTabela(raiz->raiz_arvore, &comp, &cod, &pbits);
     
     return 0;
 }
