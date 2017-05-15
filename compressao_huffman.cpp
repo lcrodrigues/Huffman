@@ -64,8 +64,8 @@ void calcularProbabilidade(vector<Simbolo*> vec_s, double total) {
 }
 
 void gerarTabela(Simbolo *raiz, map<string, int> *comp, map<string, string> *cod, stack<string> *pbits) {
-    
-    if(!raiz) {
+
+    if(raiz->esquerda && raiz->direita) {
         pbits->push("0");
         gerarTabela(raiz->esquerda, comp, cod, pbits);
         pbits->pop();
@@ -160,6 +160,10 @@ int main(){
     map<string, string> cod;
 
     gerarTabela(raiz->raiz_arvore, &comp, &cod, &pbits);
+
+    for(map<string, string>::iterator it = cod.begin(); it != cod.end(); it++) {
+        cout << it->first << ", " << it->second << endl;
+    }
 
     return 0;
 }
