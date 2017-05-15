@@ -7,6 +7,7 @@
 #include <sstream>
 #include <functional>
 #include <stack>
+#include <map>
 
 using namespace std;
 
@@ -62,14 +63,9 @@ void calcularProbabilidade(vector<Simbolo*> vec_s, double total) {
     }
 }
 
-void gerarTabela(Simbolo *raiz, vector<int> *comp, vector<int> *cod, stack<string> *pbits) {
+void gerarTabela(Simbolo *raiz, map<string, int> *comp, map<string, string> *cod, stack<string> *pbits) {
     
-    stack<string> pilha_codigo = *pbits;
-
-    cout << pilha_codigo.top() << endl;
-    pilha_codigo.pop();
-
- /*   if(!raiz) {
+    if(!raiz) {
         pbits->push("0");
         gerarTabela(raiz->esquerda, comp, cod, pbits);
         pbits->pop();
@@ -81,13 +77,28 @@ void gerarTabela(Simbolo *raiz, vector<int> *comp, vector<int> *cod, stack<strin
     }
     else{
         stack<string> pilha_codigo = *pbits;
+        string codigo;
+        char aux = '0';
+        int comprimento = 0;
 
         while(!pilha_codigo.empty()) {
-            cout << pilha_codigo.top() << endl;
+            string aux_s = pilha_codigo.top();
+
+            char aux_c = aux_s.at(0);
+            char aux_or = aux | aux_c;
+            string cd(1, aux_or);
+
+            codigo += cd;
+            aux = codigo.at(comprimento);
+
             pilha_codigo.pop();
+
+            comprimento++;
         }
 
-    }   */
+        comp->insert(pair<string, int>(raiz->getCaractere(), comprimento));
+        cod->insert(pair<string, string>(raiz->getCaractere(), codigo));
+    }   
 }   
 
 void exibirArvore(Simbolo *s) {
@@ -144,18 +155,11 @@ int main(){
 
     gerarArvore(&pq_simbolo, raiz);
     
-    stack<string> pbits;
-    vector<int> comp;
-    vector<int> cod;
-
-    pbits.push("4");
-    pbits.push("4");
-    pbits.push("4");
-    pbits.push("4");
-    pbits.push("4");
-    pbits.push("4");
+    stack<string> pbits, aux;
+    map<string, int> comp;
+    map<string, string> cod;
 
     gerarTabela(raiz->raiz_arvore, &comp, &cod, &pbits);
-    
+
     return 0;
 }
